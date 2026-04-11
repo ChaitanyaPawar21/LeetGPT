@@ -23,10 +23,13 @@ const TypingBubble = () => (
 export const ChatWindow = () => {
   const { messages, isLoading } = useChat();
   const scrollRef = useRef(null);
+  const bottomRef = useRef(null);
   const [showScrollButton, setShowScrollButton] = React.useState(false);
 
   const scrollToBottom = () => {
-    if (scrollRef.current) {
+    if (bottomRef.current) {
+      bottomRef.current.scrollIntoView({ behavior: 'smooth', block: 'end' });
+    } else if (scrollRef.current) {
       const scrollHeight = scrollRef.current.scrollHeight;
       const height = scrollRef.current.clientHeight;
       const maxScrollTop = scrollHeight - height;
@@ -74,8 +77,9 @@ export const ChatWindow = () => {
           ))}
           {isLoading && <TypingBubble />}
           {/* Spacer for bottom input */}
-          <div className="h-32" />
+          <div className="h-40 md:h-32" />
         </div>
+        <div ref={bottomRef} className="h-4" />
       </div>
 
       {showScrollButton && (

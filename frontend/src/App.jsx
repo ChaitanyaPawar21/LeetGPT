@@ -21,7 +21,7 @@ const AppContent = () => {
     const { isAuthenticated } = useAuth();
 
     return (
-        <div className="flex h-screen bg-brand-black text-foreground overflow-hidden font-sans transition-colors relative">
+        <div className="flex min-h-screen h-[100dvh] bg-brand-black text-foreground overflow-hidden font-sans transition-colors relative">
             {isAuthenticated && (
                 <>
                     {/* Mobile Sidebar Overlay */}
