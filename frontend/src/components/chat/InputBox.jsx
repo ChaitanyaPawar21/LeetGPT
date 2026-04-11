@@ -58,7 +58,7 @@ export const InputBox = () => {
     <div className="p-4 bg-brand-black/80 backdrop-blur-xl border-t border-brand-border sticky bottom-0 z-30">
       <div className="max-w-3xl mx-auto space-y-4">
         {/* Quick Actions */}
-        <div className="flex flex-wrap gap-2 overflow-x-auto pb-1 no-scrollbar">
+        <div className="hidden md:flex flex-wrap gap-2 overflow-x-auto pb-1 no-scrollbar">
           <QuickAction icon={Sparkles} label="Explain in simple terms" onClick={() => sendMessage("Explain the current problem in very simple terms for a beginner.")} />
           <QuickAction icon={Zap} label="Give optimized solution" onClick={() => sendMessage("What is the most time and space optimized solution for this problem?")} />
           <QuickAction icon={Code2} label="Show dry run" onClick={() => sendMessage("Walk me through a dry run of the solution with an example input.")} />
