@@ -1,0 +1,68 @@
+@import "tailwindcss";
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+  --card: #f5f5f7;
+  --card-foreground: #171717;
+  --border: #e5e5e7;
+  --muted: #737373;
+  --accent: #0066cc;
+}
+
+.dark {
+  --background: #000000;
+  --foreground: #f5f5f7;
+  --card: #0a0a0a;
+  --card-foreground: #f5f5f7;
+  --border: #262626;
+  --muted: #a3a3a3;
+  --accent: #2563eb;
+}
+
+@theme {
+  --color-brand-black: var(--background);
+  --color-brand-dark: var(--card);
+  --color-brand-grey: var(--card);
+  --color-brand-border: var(--border);
+  --color-brand-text-muted: var(--muted);
+  --color-accent: var(--accent);
+  --color-foreground: var(--foreground);
+}
+
+@layer base {
+  body {
+    @apply bg-brand-black text-foreground;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+}
+
+
+/* Custom transitions and scrollbar */
+@layer utilities {
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 6px;
+  }
+  .custom-scrollbar::-webkit-scrollbar-track {
+    @apply bg-transparent;
+  }
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    @apply bg-brand-border rounded-full hover:bg-neutral-700;
+  }
+}
+
+.gemini-blur {
+  backdrop-filter: blur(20px);
+  background: rgba(0, 0, 0, 0.7);
+}
+
+.typing-animation::after {
+  content: '|';
+  animation: blink 1s infinite;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}

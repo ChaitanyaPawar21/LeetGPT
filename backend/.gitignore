@@ -1,0 +1,4 @@
+node_modulesnpm ru
+backend/.env
+dist
+build
