@@ -1,3 +1,4 @@
+import React from 'react';
 import { X, Copy, Check, Share2, Link as LinkIcon, Globe, Loader2, ShieldOff, ShieldCheck } from 'lucide-react';
 import { useChat } from '../../context/ChatContext';
 import { cn } from '../../utils/cn';
