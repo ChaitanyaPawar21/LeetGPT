@@ -33,7 +33,7 @@ const LoginPage = () => {
     };
 
     const handleGoogleLogin = () => {
-        window.location.href = "https://leetgpt.vercel.app//api/auth/google";
+        window.location.href = "https://leetgpt.onrender.com/api/auth/google";
     };
 
     if (loading) return null; // Or a loading spinner

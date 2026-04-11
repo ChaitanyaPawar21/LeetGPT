@@ -16,8 +16,7 @@ const sendTokenResponse = (user, statusCode, res) => {
     httpOnly: true,
     secure: true,
     sameSite: "None",
-    domain: ".onrender.com",
-};
+  };
 
   res
     .status(statusCode)
@@ -84,6 +83,8 @@ export const logout = (req, res) => {
   res.cookie("token", "none", {
     expires: new Date(Date.now() + 10 * 1000),
     httpOnly: true,
+    secure: true,
+    sameSite: "None",
   });
 
   res.status(200).json({ success: true, message: "Logged out successfully" });

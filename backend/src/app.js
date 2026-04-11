@@ -9,6 +9,7 @@ import chatRoutes from "./routes/chatRoutes.js";
 import "./config/passport.js"; // Initialize passport config
 
 const app = express();
+app.set("trust proxy", 1); // Trust Render proxy for secure cookies
 
 // Middleware
 app.use(express.json());
@@ -32,7 +33,8 @@ app.use(session({
     resave: false,
     saveUninitialized: false,
     cookie: {
-        secure: process.env.NODE_ENV === "production",
+        secure: true, // Must be true for sameSite: 'none'
+        sameSite: 'none', // Critical for cross-domain OAuth callback (Render -> Vercel)
         maxAge: 24 * 60 * 60 * 1000 // 24 hours
     }
 }));

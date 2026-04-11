@@ -6,7 +6,6 @@ const port = config.port;
 
 // Connect to Database
 connectDB();
-app.set("trust proxy", 1);
 // Start Server
 app.listen(port, () => {
     console.log(`Server running on port ${port}`);
