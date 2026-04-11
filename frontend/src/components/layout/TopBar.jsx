@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import { Share2, Trash2, Edit2, AlertCircle, FileText, Settings } from 'lucide-react';
+import { Share2, Trash2, Edit2, AlertCircle, FileText, Settings, Menu } from 'lucide-react';
 import { useChat } from '../../context/ChatContext';
 import { cn } from '../../utils/cn';
 
-export const TopBar = ({ onOpenSettings, onOpenShare }) => {
+export const TopBar = ({ onOpenSettings, onOpenShare, onToggleSidebar }) => {
   const { currentChatId, chats, renameChat, createNewChat, isProblemMode, setIsProblemMode } = useChat();
   const currentChat = (chats || []).find(c => c._id === currentChatId) || { title: 'New Chat' };
   const [isEditing, setIsEditing] = useState(false);
@@ -15,8 +15,15 @@ export const TopBar = ({ onOpenSettings, onOpenShare }) => {
   };
 
   return (
-    <header className="h-14 border-b border-brand-border bg-brand-black/80 backdrop-blur-md flex items-center justify-between px-6 sticky top-0 z-30 transition-colors">
-      <div className="flex items-center gap-4">
+    <header className="h-14 border-b border-brand-border bg-brand-black/80 backdrop-blur-md flex items-center justify-between px-4 md:px-6 sticky top-0 z-30 transition-colors">
+      <div className="flex items-center gap-2 md:gap-4 overflow-hidden">
+        <button 
+          onClick={onToggleSidebar}
+          className="md:hidden p-2 -ml-2 text-brand-text-muted hover:text-foreground shrink-0"
+          title="Toggle Sidebar"
+        >
+          <Menu size={20} />
+        </button>
         {isEditing ? (
           <input 
             type="text"
@@ -47,28 +54,29 @@ export const TopBar = ({ onOpenSettings, onOpenShare }) => {
           )}
         >
           <FileText size={14} />
-          <span>{isProblemMode ? "Problem Mode Active" : "Problem Mode"}</span>
+          <span className="hidden sm:inline">{isProblemMode ? "Problem Mode Active" : "Problem Mode"}</span>
+          <span className="sm:hidden">Problem Mode</span>
         </button>
 
-        <div className="w-[1px] h-4 bg-brand-border mx-1" />
+        <div className="w-[1px] h-4 bg-brand-border mx-1 hidden sm:block" />
 
         <button 
           onClick={onOpenShare}
-          className="p-2 text-brand-text-muted hover:text-foreground hover:bg-brand-grey rounded-lg transition-all" 
+          className="p-1.5 md:p-2 text-brand-text-muted hover:text-foreground hover:bg-brand-grey rounded-lg transition-all" 
           title="Share Chat"
         >
           <Share2 size={18} />
         </button>
         <button 
           onClick={createNewChat}
-          className="p-2 text-neutral-400 hover:text-red-500 hover:bg-red-500/10 rounded-lg transition-all" 
+          className="p-1.5 md:p-2 text-neutral-400 hover:text-red-500 hover:bg-red-500/10 rounded-lg transition-all" 
           title="Clear & New Chat"
         >
           <Trash2 size={18} />
         </button>
         <button 
           onClick={onOpenSettings}
-          className="p-2 text-brand-text-muted hover:text-foreground hover:bg-brand-grey rounded-lg transition-all" 
+          className="p-1.5 md:p-2 text-brand-text-muted hover:text-foreground hover:bg-brand-grey rounded-lg transition-all" 
           title="Settings"
         >
           <Settings size={18} />

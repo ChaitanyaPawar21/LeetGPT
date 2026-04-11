@@ -17,16 +17,33 @@ import AuthCallback from "./pages/AuthCallback";
 const AppContent = () => {
     const [isSettingsOpen, setIsSettingsOpen] = useState(false);
     const [isShareOpen, setIsShareOpen] = useState(false);
+    const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
     const { isAuthenticated } = useAuth();
 
     return (
-        <div className="flex h-screen bg-brand-black text-foreground overflow-hidden font-sans transition-colors">
+        <div className="flex h-screen bg-brand-black text-foreground overflow-hidden font-sans transition-colors relative">
             {isAuthenticated && (
-                <Sidebar onOpenSettings={() => setIsSettingsOpen(true)} />
+                <>
+                    {/* Mobile Sidebar Overlay */}
+                    {isMobileSidebarOpen && (
+                        <div 
+                            className="fixed inset-0 bg-black/60 z-30 md:hidden backdrop-blur-sm" 
+                            onClick={() => setIsMobileSidebarOpen(false)}
+                        />
+                    )}
+                    <Sidebar 
+                        onOpenSettings={() => setIsSettingsOpen(true)} 
+                        isOpen={isMobileSidebarOpen}
+                    />
+                </>
             )}
-            <main className="flex-1 flex flex-col min-w-0 min-h-0 relative">
+            <main className="flex-1 flex flex-col min-w-0 min-h-0 relative w-full">
                 {isAuthenticated && (
-                    <TopBar onOpenSettings={() => setIsSettingsOpen(true)} onOpenShare={() => setIsShareOpen(true)} />
+                    <TopBar 
+                        onOpenSettings={() => setIsSettingsOpen(true)} 
+                        onOpenShare={() => setIsShareOpen(true)}
+                        onToggleSidebar={() => setIsMobileSidebarOpen(!isMobileSidebarOpen)}
+                    />
                 )}
                 <Routes>
                     <Route path="/login" element={<LoginPage />} />

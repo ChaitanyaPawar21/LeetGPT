@@ -4,7 +4,7 @@ import { useChat } from '../../context/ChatContext';
 import { useAuth } from '../../context/AuthContext';
 import { cn } from '../../utils/cn';
 
-export const Sidebar = ({ onOpenSettings }) => {
+export const Sidebar = ({ onOpenSettings, isOpen }) => {
   const {
     chats,
     currentChatId,
@@ -68,7 +68,10 @@ export const Sidebar = ({ onOpenSettings }) => {
   );
 
   return (
-    <aside className="w-64 h-screen bg-brand-dark border-r border-brand-border flex flex-col shrink-0">
+    <aside className={cn(
+      "fixed md:relative z-40 inset-y-0 left-0 w-64 h-screen bg-brand-dark border-r border-brand-border flex flex-col shrink-0 transition-transform duration-300 ease-in-out font-sans",
+      isOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0"
+    )}>
       
       {/* New Chat */}
       <div className="p-4">

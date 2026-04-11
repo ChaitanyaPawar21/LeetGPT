@@ -6,7 +6,7 @@ import { ChevronDown } from 'lucide-react';
 
 // Animated typing indicator
 const TypingBubble = () => (
-  <div className="flex items-end gap-3 p-6 max-w-4xl mx-auto w-full">
+  <div className="flex items-end gap-3 px-4 md:px-6 py-6 md:py-8 max-w-4xl mx-auto w-full">
     <div className="w-8 h-8 rounded-full bg-gradient-to-br from-violet-500 to-indigo-600 flex items-center justify-center shrink-0 shadow-lg">
       <span className="text-[11px] font-bold text-white">AI</span>
     </div>

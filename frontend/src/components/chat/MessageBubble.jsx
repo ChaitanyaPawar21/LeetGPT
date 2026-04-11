@@ -26,7 +26,7 @@ export const MessageBubble = ({ message }) => {
 
   return (
     <div className={cn(
-      "group w-full flex gap-6 px-6 py-8 transition-colors",
+      "group w-full flex gap-3 md:gap-6 px-4 md:px-6 py-6 md:py-8 transition-colors",
       isAI ? "bg-transparent text-foreground" : "bg-brand-grey/20 text-foreground"
     )}>
 
