@@ -15,7 +15,7 @@ const sendTokenResponse = (user, statusCode, res) => {
         expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // 7 days
         httpOnly: true,
         secure: process.env.NODE_ENV === "production",
-        sameSite: "Lax",
+        sameSite: "none",
     };
 
     res.status(statusCode).cookie("token", token, cookieOptions).json({
@@ -93,14 +93,16 @@ export const googleSuccess = (req, res) => {
         const token = generateToken(req.user._id);
 
         const cookieOptions = {
-            expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // 7 days
+            expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
             httpOnly: true,
-            secure: process.env.NODE_ENV === "production",
-            sameSite: "Lax",
+            secure: true, // MUST be true in production (Vercel + HTTPS)
+            sameSite: "None", // IMPORTANT for cross-site cookies
         };
 
         res.cookie("token", token, cookieOptions);
-        res.redirect(config.frontendURL);
+
+        // ✅ correct redirect
+        res.redirect(`${config.frontendURL}`);
     } else {
         res.redirect(`${config.frontendURL}/login?error=Google_Auth_Failed`);
     }
