@@ -5,7 +5,6 @@ import { TopBar } from './components/layout/TopBar'
 import { ChatWindow } from './components/chat/ChatWindow'
 import { InputBox } from './components/chat/InputBox'
 import { ChatProvider } from './context/ChatContext'
-import { ThemeProvider } from './context/ThemeContext'
 import { AuthProvider, useAuth } from './context/AuthContext'
 import { SettingsModal } from './components/modals/SettingsModal'
 import { ShareModal } from './components/modals/ShareModal'
@@ -57,11 +56,9 @@ function App() {
   return (
     <Router>
         <AuthProvider>
-            <ThemeProvider>
-                <ChatProvider>
-                    <AppContent />
-                </ChatProvider>
-            </ThemeProvider>
+            <ChatProvider>
+                <AppContent />
+            </ChatProvider>
         </AuthProvider>
     </Router>
   )

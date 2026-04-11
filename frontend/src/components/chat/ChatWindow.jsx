@@ -26,20 +26,36 @@ export const ChatWindow = () => {
   const [showScrollButton, setShowScrollButton] = React.useState(false);
 
   const scrollToBottom = () => {
-    scrollRef.current?.scrollTo({
-      top: scrollRef.current.scrollHeight,
-      behavior: 'smooth'
-    });
+    if (scrollRef.current) {
+      const scrollHeight = scrollRef.current.scrollHeight;
+      const height = scrollRef.current.clientHeight;
+      const maxScrollTop = scrollHeight - height;
+      
+      scrollRef.current.scrollTo({
+        top: maxScrollTop > 0 ? maxScrollTop : 0,
+        behavior: 'smooth'
+      });
+    }
   };
 
   useEffect(() => {
+    // Initial scroll
     scrollToBottom();
+    
+    // Delayed scroll for dynamic content (code blocks, animations)
+    const timer = setTimeout(() => {
+      scrollToBottom();
+    }, 100);
+
+    return () => clearTimeout(timer);
   }, [messages, isLoading]);
 
   const handleScroll = () => {
     if (scrollRef.current) {
       const { scrollTop, scrollHeight, clientHeight } = scrollRef.current;
-      setShowScrollButton(scrollHeight - scrollTop - clientHeight > 300);
+      // Show button if we're more than 300px away from bottom
+      const isNearBottom = scrollHeight - scrollTop - clientHeight < 100;
+      setShowScrollButton(!isNearBottom);
     }
   };
 

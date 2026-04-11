@@ -1,12 +1,10 @@
 import React from 'react';
-import { X, Moon, Sun, Monitor, Trash2 } from 'lucide-react';
-import { useTheme } from '../../context/ThemeContext';
+import { X, Monitor, Trash2 } from 'lucide-react';
 import { useChat } from '../../context/ChatContext';
 import { useAuth } from '../../context/AuthContext';
 import { Loader2, Check } from 'lucide-react';
 
 export const SettingsModal = ({ isOpen, onClose }) => {
-  const { isDarkMode, toggleTheme } = useTheme();
   const { systemMessage, setSystemMessage, deleteAllHistory } = useChat();
   const { updateProfile } = useAuth();
   const [isSaving, setIsSaving] = React.useState(false);
@@ -38,28 +36,6 @@ export const SettingsModal = ({ isOpen, onClose }) => {
         </div>
 
         <div className="p-6 space-y-8">
-          {/* Theme Section */}
-          <div className="space-y-4">
-            <h3 className="text-xs font-bold text-brand-text-muted uppercase tracking-widest px-1">Appearance</h3>
-            <div className="flex items-center justify-between p-4 bg-brand-grey/50 rounded-xl border border-brand-border">
-              <div className="flex items-center gap-3">
-                <div className="p-2 bg-brand-grey rounded-lg border border-brand-border">
-                  {isDarkMode ? <Moon size={18} /> : <Sun size={18} />}
-                </div>
-                <div>
-                  <p className="text-sm font-medium">Dark Mode</p>
-                  <p className="text-[11px] text-brand-text-muted">Toggle between light and dark themes</p>
-                </div>
-              </div>
-              <button 
-                onClick={toggleTheme}
-                className={`w-12 h-6 rounded-full transition-colors relative ${isDarkMode ? 'bg-blue-600' : 'bg-neutral-600'}`}
-              >
-                <div className={`absolute top-1 w-4 h-4 bg-white rounded-full transition-all ${isDarkMode ? 'left-7' : 'left-1'}`} />
-              </button>
-            </div>
-          </div>
-
           {/* System Message Section */}
           <div className="space-y-4">
             <div className="flex items-center justify-between px-1">
