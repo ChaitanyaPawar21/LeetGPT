@@ -1,29 +1,25 @@
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || "https://leetgpt.onrender.com/api",
-  withCredentials: true,
+    baseURL: import.meta.env.VITE_API_URL || "https://leetgpt.onrender.com/api",
+    withCredentials: true,
 });
 
-// ✅ Attach token from localStorage to every request
+// ✅ Attach token to every request
 api.interceptors.request.use((config) => {
-  const token = localStorage.getItem("token");
-  if (token) {
-    config.headers.Authorization = `Bearer ${token}`;
-  }
-  return config;
+    const token = localStorage.getItem("token");
+    if (token) {
+        config.headers.Authorization = `Bearer ${token}`;
+    }
+    return config;
 });
 
-// ✅ If 401, clear token and redirect to login
+// ✅ REMOVED auto-redirect on 401 — AuthContext handles that now
 api.interceptors.response.use(
-  (response) => response,
-  (error) => {
-    if (error.response?.status === 401) {
-      localStorage.removeItem("token");
-      window.location.href = "/login";
+    (response) => response,
+    (error) => {
+        return Promise.reject(error);
     }
-    return Promise.reject(error);
-  }
 );
 
 export default api;

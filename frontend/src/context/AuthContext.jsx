@@ -9,6 +9,15 @@ export const AuthProvider = ({ children }) => {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
 
     const checkAuthStatus = async () => {
+        // ✅ If no token at all, don't even call /me
+        const token = localStorage.getItem("token");
+        if (!token) {
+            setUser(null);
+            setIsAuthenticated(false);
+            setLoading(false);
+            return;
+        }
+
         try {
             const res = await api.get("/auth/me");
             if (res.data.success) {
@@ -16,6 +25,8 @@ export const AuthProvider = ({ children }) => {
                 setIsAuthenticated(true);
             }
         } catch (error) {
+            // ✅ Token is invalid/expired — clear it
+            localStorage.removeItem("token");
             setUser(null);
             setIsAuthenticated(false);
         } finally {
@@ -30,8 +41,11 @@ export const AuthProvider = ({ children }) => {
     const login = async (email, password) => {
         try {
             const response = await api.post('/auth/login', { email, password });
-            
             if (response.data.success) {
+                // ✅ Save token from email/password login too
+                if (response.data.token) {
+                    localStorage.setItem("token", response.data.token);
+                }
                 setUser(response.data.user);
                 setIsAuthenticated(true);
                 return response.data;
@@ -46,6 +60,9 @@ export const AuthProvider = ({ children }) => {
         try {
             const res = await api.post("/auth/register", { name, email, password });
             if (res.data.success) {
+                if (res.data.token) {
+                    localStorage.setItem("token", res.data.token);
+                }
                 setUser(res.data.user);
                 setIsAuthenticated(true);
                 return res.data;
@@ -64,7 +81,7 @@ export const AuthProvider = ({ children }) => {
         } finally {
             setUser(null);
             setIsAuthenticated(false);
-            localStorage.removeItem('token'); // Cleanup just in case
+            localStorage.removeItem('token');
             window.location.href = "/login";
         }
     };
@@ -84,7 +101,6 @@ export const AuthProvider = ({ children }) => {
 
     return (
         <AuthContext.Provider value={{ user, loading, isAuthenticated, login, register, logout, updateProfile, checkAuthStatus }}>
-
             {children}
         </AuthContext.Provider>
     );
