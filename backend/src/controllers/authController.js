@@ -35,21 +35,11 @@ const sendTokenResponse = (user, statusCode, res) => {
 export const register = async (req, res) => {
   try {
     const { name, email, password } = req.body;
-
-    // Check if user exists
     let user = await User.findOne({ email });
     if (user) {
-      return res
-        .status(400)
-        .json({ success: false, message: "User already exists" });
+      return res.status(400).json({ success: false, message: "User already exists" });
     }
-
-    user = await User.create({
-      name,
-      email,
-      password,
-    });
-
+    user = await User.create({ name, email, password });
     sendTokenResponse(user, 201, res);
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
@@ -59,20 +49,13 @@ export const register = async (req, res) => {
 export const login = async (req, res) => {
   try {
     const { email, password } = req.body;
-
     if (!email || !password) {
-      return res
-        .status(400)
-        .json({ success: false, message: "Please provide email and password" });
+      return res.status(400).json({ success: false, message: "Please provide email and password" });
     }
-
     const user = await User.findOne({ email }).select("+password");
     if (!user || !(await user.comparePassword(password))) {
-      return res
-        .status(401)
-        .json({ success: false, message: "Invalid credentials" });
+      return res.status(401).json({ success: false, message: "Invalid credentials" });
     }
-
     sendTokenResponse(user, 200, res);
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
@@ -86,7 +69,6 @@ export const logout = (req, res) => {
     secure: true,
     sameSite: "None",
   });
-
   res.status(200).json({ success: true, message: "Logged out successfully" });
 };
 
@@ -99,35 +81,23 @@ export const getMe = async (req, res) => {
   }
 };
 
+// ✅ KEY CHANGE: redirect with token in URL
 export const googleSuccess = (req, res) => {
   if (req.user) {
     const token = generateToken(req.user._id);
-
-    const cookieOptions = {
-      expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
-      httpOnly: true,
-      secure: true, // MUST be true in production (Vercel + HTTPS)
-      sameSite: "None", // IMPORTANT for cross-site cookies
-    };
-
-    res.cookie("token", token, cookieOptions);
-
-    // ✅ correct redirect
-    res.redirect(`${config.frontendURL}`);
+    res.redirect(`${config.frontendURL}/auth/callback?token=${token}`);
   } else {
     res.redirect(`${config.frontendURL}/login?error=Google_Auth_Failed`);
   }
 };
+
 export const updateProfile = async (req, res) => {
   try {
     const { systemPrompt, name } = req.body;
     const user = await User.findById(req.user.id);
-
     if (name) user.name = name;
     if (systemPrompt !== undefined) user.systemPrompt = systemPrompt;
-
     await user.save();
-
     res.status(200).json({
       success: true,
       user: {
